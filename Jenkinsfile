@@ -2,7 +2,7 @@ pipeline {
     agent any
     stage {
         stage('Clone') {
-            step{
+            step {
                 git 'https://github.com/TranVPhuc/Test-Webhook.git'
             }
         }
