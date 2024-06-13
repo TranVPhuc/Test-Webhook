@@ -12,24 +12,24 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-           
-                environment {
-                    scannerHome = tool 'sonarqube';
-                } 
-                steps {
-                withSonarQubeEnv('sonarqube'){
-                      sh "${scannerHome}/bin/sonar-scanner \
-                            -D sonar.login=admin \
-                            -D sonar.password=Lecagod11! \
-                            -D sonar.projectKey=Demo \
-                            -Dsonar.projectName='Demo' \
-                            -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-                            -Dsonar.host.url=http://192.168.74.129:9000 \
-                            -Dsonar.token=sqp_41aa42c1df91644f502ababc763d60f358904afb"
+        stage('build && SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    // Optionally use a Maven environment you've configured already
+                    withMaven(maven:'Maven 3.9.7') {
+                        sh 'mvn clean package sonar:sonar'
+                    }
                 }
             }
         }
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
     }
 
     post {
