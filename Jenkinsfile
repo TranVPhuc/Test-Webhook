@@ -6,6 +6,13 @@ pipeline {
                 git 'https://github.com/TranVPhuc/Test-Webhook.git'
             }
         }
+        stage('Scan') {
+            steps {
+                withSonarQubeEnv(installationName: 'LearningSonarQube') {
+                    sh '.mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+                }
+            }
+        }
     }
 
     post {
