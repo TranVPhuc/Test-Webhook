@@ -14,11 +14,16 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                script {
-                    withSonarQubeEnv(installationName: 'LearningSonarQube') {
-                        bat '''mvn clean verify sonar:sonar -Dsonar.projectKey=Demo -Dsonar.projectName='Demo' -Dsonar.host.url=http://192.168.74.129:9000 -Dsonar.token=sqp_41aa42c1df91644f502ababc763d60f358904afb''' //port 9000 is default for sonar
-                        echo 'SonarQube Analysis Completed'
-                    }
+                def scannerHome = tool 'sonarqube';
+                withSonarQubeEnv('sonarqube'){
+                      sh "${scannerHome}/bin/sonar-scanner \
+                            -D sonar.login=admin \
+                            -D sonar.password=Lecagod11! \
+                            -D sonar.projectKey=Demo \
+                            -Dsonar.projectName='Demo' \
+                            -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+                            -Dsonar.host.url=http://192.168.74.129:9000 \
+                            -Dsonar.token=sqp_41aa42c1df91644f502ababc763d60f358904afb"
                 }
             }
         }
