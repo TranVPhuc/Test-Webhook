@@ -1,15 +1,24 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven'
+    }
+
     stages {
         stage('Clone') {
             steps {
                 git 'https://github.com/TranVPhuc/Test-Webhook.git'
+                echo 'Pull codes from Github success'
             }
         }
-        stage('Scan') {
+
+        stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv(installationName: 'LearningSonarQube') {
-                    sh '.mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+                script {
+                    withSonarQubeEnv(installationName: 'LearningSonarQube') {
+                        bat '''mvn clean verify sonar:sonar -Dsonar.projectKey=ProjectNameSonar -Dsonar.projectName='ProjectNameSonar' -Dsonar.host.url=http://192.168.74.129:9000''' //port 9000 is default for sonar
+                        echo 'SonarQube Analysis Completed'
+                    }
                 }
             }
         }
