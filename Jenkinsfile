@@ -22,7 +22,9 @@ pipeline {
                 withSonarQubeEnv('sonarqube') {
                     sh "${scannerHome}/bin/sonar-scanner \
                         -Dsonar.projectKey=Demo \
-                        -Dsonar.sources=src \
+                        -Dsonar.projectName='Demo' \
+                        -Dsonar.host.url=http://192.168.74.129:9000 \
+                        -Dsonar.token=sqp_41aa42c1df91644f502ababc763d60f358904afb
                         -Dsonar.java.binaries=target/classes"
                 }
             }
