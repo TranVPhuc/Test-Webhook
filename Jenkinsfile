@@ -2,18 +2,18 @@ pipeline {
     agent any
     environment {
         SONARQUBE_SERVER = 'sonarqube' // Tên của cấu hình SonarQube trong Jenkins
-        GITHUB_REPO = 'https://github.com/TranVPhuc/Test-Webhook.git' // Đường dẫn tới repo GitHub của bạn
     }
 
 
     stages {
         stage('Clone') {
             steps {
-                git url: "${GITHUB_REPO}", branch: 'main'
+                git 'https://github.com/TranVPhuc/Test-Webhook.git'
                 echo 'Pull codes from Github success'
             }
         }
 
+        
     }
 
     post {
