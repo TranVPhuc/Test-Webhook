@@ -3,7 +3,8 @@ pipeline {
     environment {
         SONARQUBE_SERVER = 'sonarqube' // Tên của cấu hình SonarQube trong Jenkins
         AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        AWS_DEFAULT_REGION = 'ap-southeast-1'
     }
 
 
